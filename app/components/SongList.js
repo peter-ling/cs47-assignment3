@@ -1,10 +1,13 @@
 import { StyleSheet, Image, SafeAreaView, Text, View, Pressable, FlatList } from "react-native";
 import { Themes } from "../../assets/Themes";
 import Song from "./Song";
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import 'react-native-gesture-handler';
 
 
 
-export default function SongList ({tracks}) {
+export default function SongList ({tracks, navigation}) {
 
     const renderSongItem = ({item, index}) => {
         return <Song 
@@ -14,6 +17,9 @@ export default function SongList ({tracks}) {
         album={item.album.name}
         imageurl={item.album.images[0].url}
         duration={item.duration_ms}
+        navigation={navigation}
+        external_url={item.external_urls.spotify}
+        preview_url={item.preview_url}
         />
     }
 

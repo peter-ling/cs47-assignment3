@@ -1,42 +1,62 @@
 import { StyleSheet, Image, SafeAreaView, Text, View, Pressable, FlatList } from "react-native";
 import { millisToMinutesAndSeconds } from "../../utils";
+import { Themes } from "../../assets/Themes";
+import { AntDesign } from '@expo/vector-icons'; 
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import 'react-native-gesture-handler';
+import { WebView } from "react-native-webview"
 
-export default function Song({name, index, artist, album, duration, imageurl}){
 
+let pressRow = ({navigation, external_url}) => { 
+    // want to go to song detail page 
+
+    // navigation.navigate("detailed-song", {uri: {external_url}})
+    
+
+    console.log("row is pressed")
+    
+}
+
+
+
+export default function Song({name, index, artist, album, duration, imageurl, navigation, external_url, preview_url}){
+    let prev = preview_url
+    let link = external_url
     return (
 
         
-        <SafeAreaView style={styles.songElement}>
+            <View style={styles.songElement}>
+                <Pressable style={styles.songIndexBox} onPress={() => {navigation.navigate("preview-song", {link: prev})}}>
 
-            <View style={styles.songIndexBox}>
-                <Text style={styles.sampleText}>{index + 1}</Text>
+                    <AntDesign name="play" size={24} color={Themes.colors.spotify} />   
+                </Pressable>
+
+
+                
+                <Pressable style={styles.albumImageView} onPress={() => {navigation.navigate("detailed-song", {link: link})}}>
+
+                    <Image style={styles.albumImage} source={{uri: imageurl}}></Image>
+
+                </Pressable>
+
+                <Pressable style={styles.songNameAndArtist} onPress={() => {navigation.navigate("detailed-song", {link: link})}}>
+                    <Text style={styles.sampleText}>{name}</Text>
+                    <Text style={styles.sampleText}>{artist}</Text>
+
+                </Pressable>
+
+                <Pressable style={styles.albumName} onPress={() => {navigation.navigate("detailed-song", {link: link})}}>
+                    <Text style={styles.sampleText}>{album}</Text>
+
+                </Pressable>
+
+                <Pressable style={styles.songDuration} onPress={() => {navigation.navigate("detailed-song", {link: link})}}>
+                    <Text style={styles.sampleText}>{millisToMinutesAndSeconds(duration)}</Text>
+                </Pressable>
             </View>
-
-            <View style={styles.albumImageView}>
-
-                <Image style={styles.albumImage} source={{uri: imageurl}}></Image>
-
-            </View>
-
-            <View style={styles.songNameAndArtist}>
-                <Text style={styles.sampleText}>{name}</Text>
-                <Text style={styles.sampleText}>{artist}</Text>
-
-            </View>
-
-            <View style={styles.albumName}>
-                <Text style={styles.sampleText}>{album}</Text>
-
-            </View>
-
-            <View style={styles.songDuration}>
-                <Text style={styles.sampleText}>{millisToMinutesAndSeconds(duration)}</Text>
-            </View>
-
-
-        </SafeAreaView> 
+       
     )
-    
 }
 
 const styles = StyleSheet.create({
